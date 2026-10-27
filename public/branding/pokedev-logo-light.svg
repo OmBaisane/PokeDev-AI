@@ -1,0 +1,43 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="720"
+  height="220"
+  viewBox="0 0 720 220"
+  fill="none"
+>
+  <title>PokeDev AI</title>
+  <desc>PokeDev AI logo for light backgrounds.</desc>
+
+  <image
+    href="/branding/pokedev-symbol.png"
+    x="20"
+    y="20"
+    width="180"
+    height="180"
+    preserveAspectRatio="xMidYMid meet"
+  />
+
+  <text
+    x="222"
+    y="130"
+    font-family="Inter, ui-sans-serif, Arial, sans-serif"
+    font-size="66"
+    font-weight="700"
+    letter-spacing="-2.5"
+    fill="#17152B"
+  >
+    PokeDev
+  </text>
+
+  <text
+    x="501"
+    y="130"
+    font-family="Inter, ui-sans-serif, Arial, sans-serif"
+    font-size="66"
+    font-weight="700"
+    letter-spacing="-2.5"
+    fill="#7856C5"
+  >
+    AI
+  </text>
+</svg>

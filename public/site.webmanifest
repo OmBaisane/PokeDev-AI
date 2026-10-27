@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "PokeDev AI",
+  "short_name": "PokeDev",
+  "description": "Your AI-powered developer learning companion.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0B0A14",
+  "theme_color": "#17152B",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/branding/pokedev-symbol.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
