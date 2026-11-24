@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { connection } from "next/server";
 import { requireVerifiedUser } from "@/lib/auth/permissions";
 import { logoutAction } from "@/app/actions/logout";
 import PokemonSelector from "@/components/dashboard/PokemonSelector";
@@ -5,6 +7,7 @@ import PokemonSelector from "@/components/dashboard/PokemonSelector";
 export const instant = false;
 
 export default async function DashboardPage() {
+  await connection();
   const user = await requireVerifiedUser();
 
   return (
@@ -74,16 +77,21 @@ export default async function DashboardPage() {
 
         {/* Upcoming Features */}
         <section className="mt-14 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/[0.07] bg-[#101522] p-6">
+          <Link
+            href="/dashboard/debug-lab"
+            className="group rounded-2xl border border-blue-500/20 bg-[#101522] p-6 transition hover:border-blue-400/50 hover:bg-[#131d32]"
+          >
             <p className="text-xs font-semibold uppercase tracking-widest text-blue-400">
-              Coming next
+              Available now
             </p>
-            <h3 className="mt-3 text-xl font-bold">AI Debug Lab</h3>
+            <h3 className="mt-3 text-xl font-bold transition group-hover:text-blue-300">
+              AI Debug Lab →
+            </h3>
             <p className="mt-2 text-sm leading-6 text-gray-500">
               Analyze code, discover bugs and learn better solutions with your
               AI-powered coding companion.
             </p>
-          </div>
+          </Link>
 
           <div className="rounded-2xl border border-white/[0.07] bg-[#101522] p-6">
             <p className="text-xs font-semibold uppercase tracking-widest text-purple-400">

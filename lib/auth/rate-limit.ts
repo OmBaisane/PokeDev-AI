@@ -48,3 +48,10 @@ export const authRateLimits = {
     Ratelimit.slidingWindow(3, "1 h"),
   ),
 };
+
+export const aiRateLimits = {
+  analyze: createAuthLimiter(
+    "pokedev:ai:analysis",
+    Ratelimit.slidingWindow(5, "15 m"),
+  ),
+};
