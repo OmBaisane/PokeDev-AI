@@ -42,6 +42,12 @@ const UserSchema = new Schema(
       type: Boolean,
       default: true,
     },
+
+    selectedPokemon: {
+      type: String,
+      enum: ["Pyronix", "Aquavex", "Thornyx"],
+      default: null,
+    },
   },
   {
     timestamps: true,

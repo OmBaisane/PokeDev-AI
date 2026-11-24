@@ -33,7 +33,7 @@ export async function getCurrentUser() {
     _id: session.userId,
     isActive: true,
   })
-    .select("_id name email role emailVerifiedAt")
+    .select("_id name email role emailVerifiedAt selectedPokemon")
     .lean();
 
   if (!user) {
@@ -51,5 +51,6 @@ export async function getCurrentUser() {
     email: user.email,
     role: user.role,
     emailVerifiedAt: user.emailVerifiedAt,
+    selectedPokemon: user.selectedPokemon ?? null,
   };
 }
