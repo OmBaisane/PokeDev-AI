@@ -1,35 +1,68 @@
 import Image from "next/image";
+import Link from "next/link";
+
+const navigation = [
+  { label: "Features", href: "#features" },
+  { label: "Companions", href: "#companions" },
+  { label: "About", href: "#about" },
+];
 
 export default function SiteHeader() {
   return (
-    <header className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-5 sm:px-8 lg:px-12">
-      <a
-        href="#top"
-        className="flex items-center gap-3"
-        aria-label="PokeDev AI home"
+    <header className="relative z-20 border-b border-white/[0.07] bg-[#0B0B0D]/75 backdrop-blur-xl">
+      <nav
+        aria-label="Main navigation"
+        className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12"
       >
-        <Image
-          src="/branding/pokedev-symbol.png"
-          alt="PokeDev AI mascot"
-          width={44}
-          height={44}
-          priority
-          className="h-10 w-10 rounded-xl object-contain"
-        />
-        <span className="text-lg font-bold tracking-tight sm:text-xl">
-          PokeDev <span className="text-violet-400">AI</span>
-        </span>
-      </a>
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-3"
+          aria-label="PokeDev AI home"
+        >
+          <Image
+            src="/branding/pokedev-symbol.png"
+            alt=""
+            width={42}
+            height={42}
+            priority
+            className="h-10 w-10 object-contain"
+          />
 
-      <a
-        href="#features"
-        className="rounded-full border border-white/10 bg-white/4 px-4 py-2 text-sm font-medium text-white/80 transition hover:border-violet-400/50 hover:bg-violet-400/10 hover:text-white sm:px-5"
-      >
-        Explore{" "}
-        <span aria-hidden="true" className="ml-1">
-          ↗
-        </span>
-      </a>
+          <span className="text-lg font-bold tracking-tight text-[#F5F2E9] sm:text-xl">
+            PokeDev
+            <span className="text-[#D6A84B]"> AI</span>
+          </span>
+        </Link>
+
+        <div className="hidden items-center gap-8 md:flex">
+          {navigation.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="text-sm font-medium text-white/55 transition-colors hover:text-[#E6BD69]"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/login"
+            className="hidden rounded-full px-4 py-2.5 text-sm font-semibold text-white/75 transition-colors hover:text-white sm:inline-flex"
+          >
+            Log in
+          </Link>
+
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-2 rounded-full border border-[#E6BD69]/30 bg-[#D6A84B] px-4 py-2.5 text-sm font-bold text-[#17130B] shadow-[0_0_24px_rgba(214,168,75,0.12)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#E6BD69] sm:px-5"
+          >
+            Get started
+            <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
+      </nav>
     </header>
   );
 }

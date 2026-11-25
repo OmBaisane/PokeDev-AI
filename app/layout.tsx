@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
   title: {
-    default: "PokeDev AI — Level Up Your Developer Journey",
+    default: "PokeDev AI — Debug Smarter. Grow Stronger.",
     template: "%s | PokeDev AI",
   },
   description:
-    "Your AI-powered developer learning companion. Learn coding concepts, practice skills, and level up your developer journey.",
+    "Understand JavaScript, TypeScript and Python errors with AI-powered debugging, evidence-first insights and saved analysis history.",
   applicationName: "PokeDev AI",
   manifest: "/site.webmanifest",
   icons: {
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "PokeDev AI — Level Up Your Developer Journey",
+    title: "PokeDev AI — Debug Smarter. Grow Stronger.",
     description:
-      "Your AI-powered developer learning companion. Learn, practice, and grow.",
+      "Understand your coding errors with AI-powered debugging, supporting evidence and saved analysis history.",
     siteName: "PokeDev AI",
     type: "website",
     images: [
@@ -48,15 +48,15 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PokeDev AI — Level Up Your Developer Journey",
+    title: "PokeDev AI — Debug Smarter. Grow Stronger.",
     description:
-      "Your AI-powered developer learning companion. Learn, practice, and grow.",
+      "AI-powered debugging for JavaScript, TypeScript and Python developers.",
     images: ["/og-image.png"],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#17152B",
+  themeColor: "#0B0B0D",
   colorScheme: "dark",
 };
 
@@ -68,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#0B0A14] font-sans text-white antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#0B0B0D] font-sans text-[#F5F2E9] antialiased`}
       >
         {children}
       </body>

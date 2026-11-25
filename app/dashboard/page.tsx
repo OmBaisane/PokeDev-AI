@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { connection } from "next/server";
+
 import { requireVerifiedUser } from "@/lib/auth/permissions";
-import { logoutAction } from "@/app/actions/logout";
 import PokemonSelector from "@/components/dashboard/PokemonSelector";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
 
 export const instant = false;
 
@@ -11,104 +12,145 @@ export default async function DashboardPage() {
   const user = await requireVerifiedUser();
 
   return (
-    <main className="min-h-screen bg-[#080b14] text-white">
-      {/* Top Navigation */}
-      <header className="sticky top-0 z-20 border-b border-white/6 bg-[#080b14]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-          <div>
-            <p className="text-xl font-black tracking-tight">
-              POKEDEV<span className="text-blue-500"> AI</span>
-            </p>
-            <p className="text-[10px] tracking-[0.3em] text-gray-500">
-              TRAIN. CODE. EVOLVE.
-            </p>
-          </div>
+    <main className="relative min-h-screen overflow-hidden bg-[#0B0B0D] text-[#F5F2E9]">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <div className="absolute -top-72 left-1/2 h-152 w-260 -translate-x-1/2 rounded-full bg-[#D6A84B]/5.5 blur-[130px]" />
+        <div className="absolute right-72 top-180 h-128 w-lg rounded-full bg-[#D6A84B]/[0.035] blur-[120px]" />
+      </div>
 
-          <div className="flex items-center gap-4">
-            <div className="hidden text-right sm:block">
-              <p className="text-sm font-medium">{user.name}</p>
-              <p className="text-xs text-gray-500">Developer Trainer</p>
-            </div>
+      <DashboardHeader userName={user.name} activePage="dashboard" />
 
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="rounded-xl border border-white/10 px-4 py-2 text-sm text-gray-300 transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-white"
-              >
-                Log out
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
-        {/* Welcome Section */}
-        <section className="relative overflow-hidden rounded-3xl border border-blue-500/20 bg-linear-to-br from-[#111d38] via-[#101629] to-[#0b1020] p-7 sm:p-10">
-          <div className="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
+      <div className="relative mx-auto max-w-7xl px-5 py-9 sm:px-8 sm:py-12">
+        <section className="relative overflow-hidden rounded-4xl border border-[#D6A84B]/20 bg-linear-to-br from-[#211B10] via-[#15130F] to-[#111113] p-7 shadow-[0_25px_90px_rgba(0,0,0,0.25)] sm:p-10 lg:p-12">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-24 -top-32 h-96 w-96 rounded-full bg-[#D6A84B]/9 blur-[100px]"
+          />
 
           <div className="relative max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-blue-400">
-              Your adventure begins
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#D6A84B]/20 bg-[#D6A84B]/[0.07] px-3.5 py-2 text-[10px] font-bold uppercase tracking-[0.17em] text-[#E6BD69]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D6A84B]" />
+              Trainer account active
+            </div>
+
+            <p className="mt-8 text-xs font-bold uppercase tracking-[0.25em] text-white/40">
+              Welcome back, Trainer
             </p>
 
-            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">
-              Welcome back,
-              <span className="block bg-linear-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                {user.name}!
+            <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+              Ready to level up,
+              <span className="mt-1 block bg-linear-to-r from-[#E6BD69] to-[#D6A84B] bg-clip-text text-transparent">
+                {user.name}?
               </span>
             </h1>
 
-            <p className="mt-5 max-w-lg text-sm leading-7 text-gray-400 sm:text-base">
-              Your journey from developer to AI-powered coding trainer starts
-              here. Choose your partner and prepare to evolve your coding
-              skills.
+            <p className="mt-5 max-w-xl text-sm leading-7 text-white/50 sm:text-base">
+              Every bug is an opportunity to learn. Team up with your coding
+              companion, understand the problem and become a stronger developer,
+              one fix at a time.
             </p>
 
-            <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/10 px-4 py-2 text-xs font-semibold text-blue-300">
-              <span className="h-2 w-2 rounded-full bg-blue-400" />
-              Trainer account active
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/dashboard/debug-lab"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#D6A84B] px-5 py-3.5 text-sm font-bold text-[#17130B] shadow-[0_8px_30px_rgba(214,168,75,0.12)] transition hover:-translate-y-0.5 hover:bg-[#E6BD69]"
+              >
+                Open Debug Lab
+                <span aria-hidden="true">↗</span>
+              </Link>
+
+              <Link
+                href="/dashboard/history"
+                className="inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-5 py-3.5 text-sm font-semibold text-white/75 transition hover:border-[#D6A84B]/30 hover:bg-white/6 hover:text-[#E6BD69]"
+              >
+                View your history
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Starter Selection */}
         <PokemonSelector selectedPokemon={user.selectedPokemon} />
 
-        {/* Upcoming Features */}
-        <section className="mt-14 grid gap-4 sm:grid-cols-2">
-          <Link
-            href="/dashboard/debug-lab"
-            className="group rounded-2xl border border-blue-500/20 bg-[#101522] p-6 transition hover:border-blue-400/50 hover:bg-[#131d32]"
-          >
-            <p className="text-xs font-semibold uppercase tracking-widest text-blue-400">
-              Available now
+        <section className="mt-16">
+          <div className="mb-7">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#D6A84B]">
+              Your workspace
             </p>
-            <h3 className="mt-3 text-xl font-bold transition group-hover:text-blue-300">
-              AI Debug Lab →
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-              Analyze code, discover bugs and learn better solutions with your
-              AI-powered coding companion.
+            <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+              Keep your progress moving.
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-white/40">
+              Your tools for understanding errors and revisiting what you learn.
             </p>
-          </Link>
+          </div>
 
-          <Link
-            href="/dashboard/history"
-            className="group rounded-2xl border border-cyan-500/20 bg-[#101522] p-6 transition hover:border-cyan-400/50 hover:bg-[#131d32]"
-          >
-            <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
-              Your learning archive
-            </p>
-            <h3 className="mt-3 text-xl font-bold transition group-hover:text-cyan-300">
-              Analysis History →
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-gray-500">
-              Revisit your previous AI debugging sessions, saved insights and
-              original code snapshots.
-            </p>
-          </Link>
+          <div className="grid gap-5 md:grid-cols-2">
+            <Link
+              href="/dashboard/debug-lab"
+              className="group relative overflow-hidden rounded-2xl border border-[#D6A84B]/15 bg-[#111113] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#D6A84B]/40 hover:bg-[#151411] sm:p-8"
+            >
+              <div className="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-[#D6A84B]/4.5 blur-3xl transition group-hover:bg-[#D6A84B]/9" />
+
+              <div className="relative">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#D6A84B]/20 bg-[#D6A84B]/8 text-xl text-[#E6BD69]">
+                  {"</>"}
+                </div>
+
+                <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[#D6A84B]">
+                  Available now
+                </p>
+
+                <h3 className="mt-2 text-xl font-bold text-white/90 transition group-hover:text-[#E6BD69]">
+                  AI Debug Lab
+                  <span className="ml-2 inline-block transition group-hover:translate-x-1">
+                    →
+                  </span>
+                </h3>
+
+                <p className="mt-3 max-w-md text-sm leading-7 text-white/45">
+                  Investigate JavaScript, TypeScript and Python issues with
+                  AI-powered explanations, evidence and suggested fixes.
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/dashboard/history"
+              className="group relative overflow-hidden rounded-2xl border border-white/9 bg-[#111113] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#D6A84B]/30 hover:bg-[#151411] sm:p-8"
+            >
+              <div className="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-white/[0.018] blur-3xl transition group-hover:bg-[#D6A84B]/5" />
+
+              <div className="relative">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/4 text-xl text-[#E6BD69]">
+                  ◷
+                </div>
+
+                <p className="mt-6 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">
+                  Your learning archive
+                </p>
+
+                <h3 className="mt-2 text-xl font-bold text-white/90 transition group-hover:text-[#E6BD69]">
+                  Analysis History
+                  <span className="ml-2 inline-block transition group-hover:translate-x-1">
+                    →
+                  </span>
+                </h3>
+
+                <p className="mt-3 max-w-md text-sm leading-7 text-white/45">
+                  Revisit saved debugging sessions, original code snapshots and
+                  the insights from your previous analyses.
+                </p>
+              </div>
+            </Link>
+          </div>
         </section>
+
+        <footer className="mt-16 border-t border-white/[0.07] pt-6 text-center text-xs text-white/25">
+          PokeDev AI · Debug smarter. Grow stronger.
+        </footer>
       </div>
     </main>
   );

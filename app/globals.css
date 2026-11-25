@@ -2,11 +2,11 @@
 
 :root {
   color-scheme: dark;
-  --background: #0b0a14;
-  --foreground: #f8f7ff;
-  --muted: #a5a0b8;
-  --brand: #8b5cf6;
-  --brand-light: #c4b5fd;
+  --background: #0b0b0d;
+  --foreground: #f5f2e9;
+  --muted: #a5a19a;
+  --brand: #d6a84b;
+  --brand-light: #e6bd69;
   --font-sans: Arial, Helvetica, sans-serif;
   --font-mono: "Courier New", monospace;
 }
@@ -39,8 +39,8 @@ body {
 }
 
 ::selection {
-  color: #ffffff;
-  background: rgb(139 92 246 / 55%);
+  color: #17130b;
+  background: rgb(214 168 75 / 65%);
 }
 
 a {
@@ -54,7 +54,10 @@ a {
 }
 
 button:focus-visible,
-a:focus-visible {
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--brand-light);
   outline-offset: 4px;
 }

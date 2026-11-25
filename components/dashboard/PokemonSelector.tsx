@@ -16,6 +16,7 @@ const starters: {
   type: string;
   image: string;
   description: string;
+  accent: string;
   border: string;
   glow: string;
 }[] = [
@@ -24,24 +25,27 @@ const starters: {
     type: "Fire",
     image: "/images/pokemon/pyronix.png",
     description: "A passionate companion with blazing potential.",
-    border: "border-orange-500/30",
-    glow: "from-orange-500/15",
+    accent: "text-orange-300",
+    border: "border-orange-400/25",
+    glow: "bg-orange-400/8",
   },
   {
     name: "Aquavex",
     type: "Water",
     image: "/images/pokemon/aquavex.png",
     description: "A calm companion with powerful adaptability.",
-    border: "border-cyan-500/30",
-    glow: "from-cyan-500/15",
+    accent: "text-sky-300",
+    border: "border-sky-400/25",
+    glow: "bg-sky-400/8",
   },
   {
     name: "Thornyx",
     type: "Grass",
     image: "/images/pokemon/thornyx.png",
     description: "A resilient companion with nature's strength.",
-    border: "border-green-500/30",
-    glow: "from-green-500/15",
+    accent: "text-emerald-300",
+    border: "border-emerald-400/25",
+    glow: "bg-emerald-400/8",
   },
 ];
 
@@ -78,26 +82,32 @@ export default function PokemonSelector({
   }
 
   return (
-    <section className="mt-14">
-      <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+    <section className="mt-16" aria-labelledby="starter-heading">
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-blue-400">
+          <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#D6A84B]">
             Choose your companion
           </p>
 
-          <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
-            {selectedPokemon ? "Your Pokémon" : "Choose your first Pokémon"}
+          <h2
+            id="starter-heading"
+            className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl"
+          >
+            {selectedPokemon
+              ? "Meet your companion."
+              : "Choose your first companion."}
           </h2>
 
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 max-w-xl text-sm leading-6 text-white/40">
             {selectedPokemon
-              ? "Your adventure begins with your chosen companion."
-              : "Three elemental starters. One companion. Your journey."}
+              ? "Your adventure begins with your chosen companion. Keep learning and growing together."
+              : "Three elemental starters. Three unique personalities. Choose the one that will join your developer journey."}
           </p>
         </div>
 
-        <span className="text-xs text-gray-500">
-          {selectedPokemon ? "Starter selected" : "3 Starters Available"}
+        <span className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3.5 py-2 text-xs font-semibold text-white/55">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#D6A84B]" />
+          {selectedPokemon ? "Starter selected" : "3 starters available"}
         </span>
       </div>
 
@@ -108,38 +118,47 @@ export default function PokemonSelector({
           return (
             <article
               key={pokemon.name}
-              className={`relative overflow-hidden rounded-2xl border bg-linear-to-br ${pokemon.glow} to-[#101522] p-4 transition duration-300 ${
+              className={`group relative overflow-hidden rounded-[1.65rem] border bg-[#111113] p-4 transition duration-300 sm:p-5 ${
                 isSelected
-                  ? `${pokemon.border} ring-2 ring-blue-400/50`
-                  : "border-white/10"
+                  ? "border-[#D6A84B]/50 shadow-[0_0_35px_rgba(214,168,75,0.07)]"
+                  : "border-white/8 hover:-translate-y-1 hover:border-white/20"
               }`}
             >
+              <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full blur-[75px] ${pokemon.glow}`}
+              />
+
               {isSelected && (
-                <span className="absolute right-4 top-4 z-10 rounded-full border border-blue-400/30 bg-blue-400/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-300">
+                <span className="absolute right-5 top-5 z-10 rounded-full border border-[#D6A84B]/25 bg-[#D6A84B]/10 px-3 py-1.5 text-[9px] font-bold uppercase tracking-wider text-[#E6BD69]">
                   Your companion
                 </span>
               )}
 
-              <div className="relative aspect-square overflow-hidden rounded-xl bg-black/20">
+              <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-white/5 bg-[#0B0B0D]">
                 <Image
                   src={pokemon.image}
-                  alt={pokemon.name}
+                  alt={`${pokemon.name}, ${pokemon.type}-type starter companion`}
                   fill
                   sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
-                  className="object-contain p-3"
+                  className="object-contain p-3 transition duration-500 group-hover:scale-105"
                 />
               </div>
 
-              <div className="px-1 pb-1 pt-5">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold">{pokemon.name}</h3>
+              <div className="relative px-1 pb-1 pt-5">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-xl font-bold tracking-tight text-[#F5F2E9]">
+                    {pokemon.name}
+                  </h3>
 
-                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-gray-300">
+                  <span
+                    className={`rounded-full border ${pokemon.border} bg-white/2.5 px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${pokemon.accent}`}
+                  >
                     {pokemon.type} Type
                   </span>
                 </div>
 
-                <p className="mt-3 min-h-10 text-sm leading-5 text-gray-400">
+                <p className="mt-3 min-h-10 text-sm leading-6 text-white/40">
                   {pokemon.description}
                 </p>
 
@@ -148,18 +167,18 @@ export default function PokemonSelector({
                   onClick={() => handleSelection(pokemon.name)}
                   disabled={Boolean(selectedPokemon) || isPending}
                   aria-pressed={isSelected}
-                  className={`mt-5 w-full rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                  className={`mt-5 w-full rounded-xl px-4 py-3.5 text-xs font-bold transition duration-200 ${
                     isSelected
-                      ? "cursor-default border border-blue-400/30 bg-blue-400/10 text-blue-300"
+                      ? "cursor-default border border-[#D6A84B]/30 bg-[#D6A84B]/8 text-[#E6BD69]"
                       : selectedPokemon
-                        ? "cursor-not-allowed border border-white/5 bg-white/5 text-gray-600"
-                        : "bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-50"
+                        ? "cursor-not-allowed border border-white/5 bg-white/2.5 text-white/20"
+                        : "bg-[#D6A84B] text-[#17130B] hover:bg-[#E6BD69] disabled:cursor-not-allowed disabled:opacity-50"
                   }`}
                 >
                   {isPending && !selectedPokemon
                     ? "Selecting..."
                     : isSelected
-                      ? "Selected"
+                      ? "✓ Your selected companion"
                       : selectedPokemon
                         ? "Unavailable"
                         : `Choose ${pokemon.name}`}
@@ -174,14 +193,14 @@ export default function PokemonSelector({
         <p
           role="status"
           aria-live="polite"
-          className="mt-5 text-sm text-blue-300"
+          className="mt-5 rounded-xl border border-[#D6A84B]/15 bg-[#D6A84B]/5 px-4 py-3 text-sm text-[#E6BD69]"
         >
           {message}
         </p>
       )}
 
       {!selectedPokemon && (
-        <p className="mt-5 text-center text-xs leading-6 text-gray-500">
+        <p className="mt-5 text-center text-xs leading-6 text-white/30">
           Choose carefully! Your starter will remain your companion throughout
           your training journey.
         </p>
