@@ -23,12 +23,12 @@ export const debugAnalysisRequestSchema = z
 
 export const debugAnalysisResponseSchema = z
   .object({
-    summary: z.string().min(1),
-    likelyCause: z.string().min(1),
-    evidence: z.array(z.string()).min(1),
-    suggestedFix: z.string().min(1),
-    verificationSteps: z.array(z.string()).min(1),
-    limitations: z.string().min(1),
+    summary: z.string().min(1).max(2_000),
+    likelyCause: z.string().min(1).max(4_000),
+    evidence: z.array(z.string().min(1).max(2_000)).min(1).max(10),
+    suggestedFix: z.string().min(1).max(8_000),
+    verificationSteps: z.array(z.string().min(1).max(2_000)).min(1).max(10),
+    limitations: z.string().min(1).max(2_000),
     confidence: z.enum(["low", "medium", "high"]),
   })
   .strict();

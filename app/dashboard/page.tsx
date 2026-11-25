@@ -93,16 +93,21 @@ export default async function DashboardPage() {
             </p>
           </Link>
 
-          <div className="rounded-2xl border border-white/[0.07] bg-[#101522] p-6">
-            <p className="text-xs font-semibold uppercase tracking-widest text-purple-400">
-              Your progression
+          <Link
+            href="/dashboard/history"
+            className="group rounded-2xl border border-cyan-500/20 bg-[#101522] p-6 transition hover:border-cyan-400/50 hover:bg-[#131d32]"
+          >
+            <p className="text-xs font-semibold uppercase tracking-widest text-cyan-400">
+              Your learning archive
             </p>
-            <h3 className="mt-3 text-xl font-bold">Training Journey</h3>
+            <h3 className="mt-3 text-xl font-bold transition group-hover:text-cyan-300">
+              Analysis History →
+            </h3>
             <p className="mt-2 text-sm leading-6 text-gray-500">
-              Track your coding practice, snapshots and achievements as your
-              developer skills evolve.
+              Revisit your previous AI debugging sessions, saved insights and
+              original code snapshots.
             </p>
-          </div>
+          </Link>
         </section>
       </div>
     </main>

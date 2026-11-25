@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
 import type { DebugAnalysisResponse } from "@/lib/ai/schemas";
@@ -13,6 +14,7 @@ export default function DebugLab() {
   const [additionalContext, setAdditionalContext] = useState("");
 
   const [result, setResult] = useState<DebugAnalysisResponse | null>(null);
+  const [analysisId, setAnalysisId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,6 +29,7 @@ export default function DebugLab() {
     setIsLoading(true);
     setError("");
     setResult(null);
+    setAnalysisId(null);
 
     try {
       const response = await fetch("/api/ai/analyze", {
@@ -48,7 +51,14 @@ export default function DebugLab() {
         throw new Error(payload.error || "Analysis failed. Please try again.");
       }
 
+      if (typeof payload.analysisId !== "string") {
+        throw new Error(
+          "Analysis was saved, but its history link is unavailable.",
+        );
+      }
+
       setResult(payload.data);
+      setAnalysisId(payload.analysisId);
     } catch (err) {
       setError(
         err instanceof Error
@@ -223,6 +233,26 @@ export default function DebugLab() {
 
         {result && (
           <div className="mt-7 space-y-5">
+            {analysisId && (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-4">
+                <div>
+                  <p className="text-sm font-semibold text-emerald-300">
+                    Analysis saved successfully
+                  </p>
+                  <p className="mt-1 text-xs text-gray-400">
+                    Your result and original snapshot are saved.
+                  </p>
+                </div>
+
+                <Link
+                  href={`/dashboard/history/${analysisId}`}
+                  className="rounded-lg bg-emerald-500/10 px-3 py-2 text-xs font-bold text-emerald-300 transition hover:bg-emerald-500/20"
+                >
+                  View saved analysis →
+                </Link>
+              </div>
+            )}
+
             <div className="rounded-xl border border-blue-400/20 bg-blue-400/5 p-4">
               <p className="text-xs font-bold uppercase tracking-wider text-blue-300">
                 Summary

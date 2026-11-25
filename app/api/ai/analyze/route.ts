@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { analyzeCode } from "@/lib/ai/analyze";
+import { saveAnalysis } from "@/lib/ai/save-analysis";
 import { debugAnalysisRequestSchema } from "@/lib/ai/schemas";
 import { getCurrentUser } from "@/lib/auth/dal";
 import { aiRateLimits } from "@/lib/auth/rate-limit";
@@ -12,19 +13,16 @@ function jsonError(message: string, status: number, headers?: HeadersInit) {
 }
 
 export async function POST(request: NextRequest) {
-  // Validate request content type.
   if (!request.headers.get("content-type")?.includes("application/json")) {
     return jsonError("Content-Type must be application/json.", 415);
   }
 
-  // Reject oversized requests early when Content-Length is available.
   const contentLength = Number(request.headers.get("content-length"));
 
   if (Number.isFinite(contentLength) && contentLength > MAX_BODY_SIZE) {
     return jsonError("Request body is too large.", 413);
   }
 
-  // Authenticate the user.
   let user;
 
   try {
@@ -41,7 +39,6 @@ export async function POST(request: NextRequest) {
     return jsonError("Please verify your email before using AI analysis.", 403);
   }
 
-  // Read and validate the request body.
   let rawBody: string;
 
   try {
@@ -79,7 +76,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Enforce per-user rate limiting. Fail closed if Redis is unavailable.
   let rateLimitResult;
 
   try {
@@ -99,11 +95,10 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Run AI analysis. Never expose internal provider errors.
-  try {
-    const result = await analyzeCode(validation.data);
+  let result;
 
-    return NextResponse.json({ data: result });
+  try {
+    result = await analyzeCode(validation.data);
   } catch (error) {
     const providerError =
       typeof error === "object" && error !== null
@@ -122,7 +117,6 @@ export async function POST(request: NextRequest) {
         ? providerError.status
         : undefined;
 
-    // Log metadata only. Never log user input or raw provider messages.
     console.error("[AI analysis] Provider request failed:", {
       name:
         typeof providerError.name === "string"
@@ -133,7 +127,6 @@ export async function POST(request: NextRequest) {
         typeof providerError.code === "string" ? providerError.code : undefined,
     });
 
-    // Groq rate limit reached.
     if (status === 429) {
       const retryAfterHeader = providerError.headers?.get?.("retry-after");
 
@@ -149,7 +142,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Provider authentication or configuration failure.
     if (status === 401 || status === 403) {
       return jsonError(
         "AI service configuration error. Please try again later.",
@@ -157,7 +149,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Temporary provider outages.
     if (status !== undefined && status >= 500 && status <= 599) {
       return jsonError(
         "AI analysis is temporarily unavailable. Please try again shortly.",
@@ -171,4 +162,26 @@ export async function POST(request: NextRequest) {
       502,
     );
   }
+
+  let savedAnalysis;
+
+  try {
+    savedAnalysis = await saveAnalysis({
+      userId: user.id,
+      input: validation.data,
+      result,
+    });
+  } catch {
+    console.error("[AI analysis] Failed to save completed analysis.");
+
+    return jsonError(
+      "Analysis completed, but could not be saved. Please try again later.",
+      503,
+    );
+  }
+
+  return NextResponse.json({
+    data: result,
+    analysisId: savedAnalysis._id.toString(),
+  });
 }
