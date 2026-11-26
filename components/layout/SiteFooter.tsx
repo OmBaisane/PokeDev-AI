@@ -51,7 +51,7 @@ export default function SiteFooter() {
         </nav>
 
         <p className="text-xs text-white/30">
-          © {new Date().getFullYear()} PokeDev AI. All rights reserved.
+          © 2026 PokeDev AI. All rights reserved.
         </p>
       </div>
     </footer>
