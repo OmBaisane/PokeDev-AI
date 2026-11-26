@@ -5,6 +5,7 @@ import { saveAnalysis } from "@/lib/ai/save-analysis";
 import { debugAnalysisRequestSchema } from "@/lib/ai/schemas";
 import { getCurrentUser } from "@/lib/auth/dal";
 import { aiRateLimits } from "@/lib/auth/rate-limit";
+import { awardProgressionXp } from "@/lib/progression/reward-service";
 
 const MAX_BODY_SIZE = 64 * 1024;
 
@@ -180,8 +181,21 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  let progressionReward = null;
+
+  try {
+    progressionReward = await awardProgressionXp({
+      userId: user.id,
+      sourceType: "analysis",
+      sourceId: savedAnalysis._id.toString(),
+    });
+  } catch (error) {
+    console.error("[AI analysis] Progression reward failed:", error);
+  }
+
   return NextResponse.json({
     data: result,
     analysisId: savedAnalysis._id.toString(),
+    progression: progressionReward,
   });
 }
