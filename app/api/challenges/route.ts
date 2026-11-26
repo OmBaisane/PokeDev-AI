@@ -1,14 +1,21 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
+import { NextResponse } from "next/server";
 
 import { requireVerifiedUser } from "@/lib/auth/permissions";
 import { challengeBank } from "@/lib/challenges/bank";
+import { challengeRateLimits } from "@/lib/auth/rate-limit";
 import { awardProgressionXp } from "@/lib/progression/reward-service";
+
+const MAX_BODY_SIZE = 8 * 1024;
 
 const submissionSchema = z.object({
   challengeId: z.string().min(1).max(100),
   answer: z.string().min(1).max(500),
 });
+
+function jsonError(message: string, status: number, headers?: HeadersInit) {
+  return NextResponse.json({ error: message }, { status, headers });
+}
 
 export async function GET() {
   try {
@@ -29,10 +36,7 @@ export async function GET() {
 
     return NextResponse.json({ challenges });
   } catch {
-    return NextResponse.json(
-      { error: "Unable to load challenges." },
-      { status: 401 },
-    );
+    return jsonError("Unable to load challenges.", 401);
   }
 }
 
@@ -42,21 +46,57 @@ export async function POST(request: Request) {
   try {
     user = await requireVerifiedUser();
   } catch {
-    return NextResponse.json(
-      { error: "Authentication required." },
-      { status: 401 },
+    return jsonError("Authentication required.", 401);
+  }
+
+  let rateLimitResult;
+
+  try {
+    rateLimitResult = await challengeRateLimits.submit.limit(user.id);
+  } catch {
+    return jsonError("Challenge service is temporarily unavailable.", 503);
+  }
+
+  if (!rateLimitResult.success) {
+    const retryAfter = Math.max(
+      1,
+      Math.ceil((rateLimitResult.reset - Date.now()) / 1000),
     );
+
+    return jsonError("Too many submissions. Please try again later.", 429, {
+      "Retry-After": String(retryAfter),
+    });
+  }
+
+  if (!request.headers.get("content-type")?.includes("application/json")) {
+    return jsonError("Content-Type must be application/json.", 415);
+  }
+
+  const contentLength = Number(request.headers.get("content-length"));
+
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_SIZE) {
+    return jsonError("Request body is too large.", 413);
   }
 
   try {
-    const body: unknown = await request.json();
+    const rawBody = await request.text();
+
+    if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_SIZE) {
+      return jsonError("Request body is too large.", 413);
+    }
+
+    let body: unknown;
+
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return jsonError("Invalid JSON request body.", 400);
+    }
+
     const parsed = submissionSchema.safeParse(body);
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: "Invalid challenge submission." },
-        { status: 400 },
-      );
+      return jsonError("Invalid challenge submission.", 400);
     }
 
     const challenge = challengeBank.find(
@@ -64,10 +104,7 @@ export async function POST(request: Request) {
     );
 
     if (!challenge) {
-      return NextResponse.json(
-        { error: "Challenge not found." },
-        { status: 404 },
-      );
+      return jsonError("Challenge not found.", 404);
     }
 
     if (parsed.data.answer !== challenge.correctAnswer) {
@@ -113,9 +150,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Challenge submission failed:", error);
 
-    return NextResponse.json(
-      { error: "Unable to process this challenge right now." },
-      { status: 500 },
-    );
+    return jsonError("Unable to process this challenge right now.", 500);
   }
 }

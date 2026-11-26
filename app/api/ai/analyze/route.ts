@@ -197,5 +197,6 @@ export async function POST(request: NextRequest) {
     data: result,
     analysisId: savedAnalysis._id.toString(),
     progression: progressionReward,
+    progressionPending: progressionReward === null,
   });
 }

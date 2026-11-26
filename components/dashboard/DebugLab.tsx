@@ -18,6 +18,9 @@ export default function DebugLab() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isRetryingReward, setIsRetryingReward] = useState(false);
+  const [rewardPending, setRewardPending] = useState(false);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -30,6 +33,7 @@ export default function DebugLab() {
     setError("");
     setResult(null);
     setAnalysisId(null);
+    setRewardPending(false);
 
     try {
       const response = await fetch("/api/ai/analyze", {
@@ -59,6 +63,7 @@ export default function DebugLab() {
 
       setResult(payload.data);
       setAnalysisId(payload.analysisId);
+      setRewardPending(payload.progressionPending === true);
     } catch (err) {
       setError(
         err instanceof Error
@@ -67,6 +72,33 @@ export default function DebugLab() {
       );
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function handleRetryReward() {
+    if (!analysisId || isRetryingReward) return;
+
+    setIsRetryingReward(true);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/ai/history/${analysisId}/reward`, {
+        method: "POST",
+      });
+
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "XP reward retry failed.");
+      }
+
+      setRewardPending(false);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unable to retry the XP reward.",
+      );
+    } finally {
+      setIsRetryingReward(false);
     }
   }
 
@@ -308,6 +340,32 @@ export default function DebugLab() {
                   >
                     View saved analysis →
                   </Link>
+
+                  {rewardPending && (
+                    <div className="mt-4 border-t border-[#D6A84B]/15 pt-4">
+                      <p className="text-xs leading-5 text-amber-200/70">
+                        Your analysis is saved, but its XP reward is still
+                        pending.
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={handleRetryReward}
+                        disabled={isRetryingReward}
+                        className="mt-3 rounded-lg border border-[#D6A84B]/25 bg-[#D6A84B]/10 px-3 py-2 text-xs font-bold text-[#E6BD69] transition hover:bg-[#D6A84B]/20 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {isRetryingReward
+                          ? "Retrying reward..."
+                          : "Retry XP reward"}
+                      </button>
+                    </div>
+                  )}
+
+                  {!rewardPending && (
+                    <p className="mt-3 text-xs text-emerald-300/80">
+                      XP progression processed successfully.
+                    </p>
+                  )}
                 </div>
               </div>
             )}

@@ -150,11 +150,11 @@ print(numbers[-1])`,
     type: "output",
     prompt: "What is printed by the second call?",
     code: `def add_item(item, items=[]):
-           items.append(item)
-           return items
+    items.append(item)
+    return items
 
-           print(add_item(1))
-           print(add_item(2))`,
+print(add_item(1))
+print(add_item(2))`,
     options: ["[2]", "[1, 2]", "[1]", "TypeError"],
     correctAnswer: "[1, 2]",
     explanation:

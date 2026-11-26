@@ -14,24 +14,24 @@ export const POKEMON_EVOLUTION = {
   Pyronix: {
     stages: [
       { stage: 1, name: "Pyronix", requiredXp: 0 },
-      { stage: 2, name: "Cindervolt", requiredXp: 100 },
-      { stage: 3, name: "Solpyrax", requiredXp: 300 },
+      { stage: 2, name: "Cindervolt", requiredXp: 250 },
+      { stage: 3, name: "Solpyrax", requiredXp: 700 },
     ],
   },
 
   Aquavex: {
     stages: [
       { stage: 1, name: "Aquavex", requiredXp: 0 },
-      { stage: 2, name: "Rivucrest", requiredXp: 100 },
-      { stage: 3, name: "Tiderion", requiredXp: 300 },
+      { stage: 2, name: "Rivucrest", requiredXp: 250 },
+      { stage: 3, name: "Tiderion", requiredXp: 700 },
     ],
   },
 
   Thornyx: {
     stages: [
       { stage: 1, name: "Thornyx", requiredXp: 0 },
-      { stage: 2, name: "Briarthorn", requiredXp: 100 },
-      { stage: 3, name: "Verdantyr", requiredXp: 300 },
+      { stage: 2, name: "Briarthorn", requiredXp: 250 },
+      { stage: 3, name: "Verdantyr", requiredXp: 700 },
     ],
   },
 } as const;
@@ -47,11 +47,15 @@ export type ProgressionSourceType = "analysis" | "challenge" | "milestone";
 export function getPokemonProgression(xp: number) {
   const level = Math.floor(xp / POKEMON_LEVEL_XP) + 1;
 
-  const evolutionStage = xp >= 300 ? 3 : xp >= 100 ? 2 : 1;
+  const stages = POKEMON_EVOLUTION.Pyronix.stages;
+
+  const currentStage = [...stages]
+    .reverse()
+    .find((stage) => xp >= stage.requiredXp);
 
   return {
     xp,
     level,
-    evolutionStage,
+    evolutionStage: currentStage?.stage ?? 1,
   };
 }

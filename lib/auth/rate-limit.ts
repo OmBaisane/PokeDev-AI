@@ -55,3 +55,10 @@ export const aiRateLimits = {
     Ratelimit.slidingWindow(5, "15 m"),
   ),
 };
+
+export const challengeRateLimits = {
+  submit: createAuthLimiter(
+    "pokedev:challenge:submit",
+    Ratelimit.slidingWindow(15, "15 m"),
+  ),
+};

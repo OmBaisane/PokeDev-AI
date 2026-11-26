@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { connectToDatabase } from "@/lib/db/mongoose";
 import { hashToken } from "@/lib/auth/tokens";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/session";
+import { getPokemonProgression } from "@/lib/progression/config";
 import { Session } from "@/models/Session";
 import { User } from "@/models/User";
 
@@ -33,7 +34,9 @@ export async function getCurrentUser() {
     _id: session.userId,
     isActive: true,
   })
-    .select("_id name email role emailVerifiedAt selectedPokemon")
+    .select(
+      "_id name email role emailVerifiedAt selectedPokemon totalXp completedAnalyses completedChallenges completedMilestones pokemonProgress",
+    )
     .lean();
 
   if (!user) {
@@ -45,12 +48,34 @@ export async function getCurrentUser() {
     { $set: { lastUsedAt: new Date() } },
   );
 
+  const selectedPokemon = user.selectedPokemon ?? null;
+
+  let selectedPokemonProgress = null;
+
+  if (
+    selectedPokemon === "Pyronix" ||
+    selectedPokemon === "Aquavex" ||
+    selectedPokemon === "Thornyx"
+  ) {
+    const progress = user.pokemonProgress?.[selectedPokemon];
+    const xp = progress?.xp ?? 0;
+
+    selectedPokemonProgress = getPokemonProgression(xp);
+  }
+
   return {
     id: user._id.toString(),
     name: user.name,
     email: user.email,
     role: user.role,
     emailVerifiedAt: user.emailVerifiedAt,
-    selectedPokemon: user.selectedPokemon ?? null,
+    selectedPokemon,
+
+    totalXp: user.totalXp ?? 0,
+    completedAnalyses: user.completedAnalyses ?? 0,
+    completedChallenges: user.completedChallenges ?? 0,
+    completedMilestones: user.completedMilestones ?? 0,
+
+    selectedPokemonProgress,
   };
 }

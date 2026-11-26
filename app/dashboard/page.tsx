@@ -4,6 +4,7 @@ import { connection } from "next/server";
 import { requireVerifiedUser } from "@/lib/auth/permissions";
 import PokemonSelector from "@/components/dashboard/PokemonSelector";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import ProgressOverview from "@/components/dashboard/ProgressOverview";
 
 export const instant = false;
 
@@ -73,6 +74,14 @@ export default async function DashboardPage() {
         </section>
 
         <PokemonSelector selectedPokemon={user.selectedPokemon} />
+        <ProgressOverview
+          totalXp={user.totalXp}
+          completedAnalyses={user.completedAnalyses}
+          completedChallenges={user.completedChallenges}
+          completedMilestones={user.completedMilestones}
+          selectedPokemon={user.selectedPokemon}
+          selectedPokemonProgress={user.selectedPokemonProgress}
+        />
 
         <section className="mt-16">
           <div className="mb-7">
