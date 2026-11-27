@@ -14,7 +14,7 @@ export default function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="relative z-20 border-b border-white/[0.07] bg-[#0B0B0D]/75 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#0B0B0D]/95 shadow-lg shadow-black/10 backdrop-blur-xl">
       <nav
         aria-label="Main navigation"
         className="relative mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12"

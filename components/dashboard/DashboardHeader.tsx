@@ -28,7 +28,7 @@ export default function DashboardHeader({
   activePage,
 }: DashboardHeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-white/[0.07] bg-[#0B0B0D]/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/[0.07] bg-[#0B0B0D]/95 shadow-lg shadow-black/10 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-2 sm:px-8">
         <div className="flex items-center gap-2 py-3 sm:justify-between sm:gap-3 sm:py-4">
           <Link

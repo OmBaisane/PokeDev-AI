@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div
       id="top"
-      className="relative isolate min-h-screen overflow-hidden bg-[#0B0B0D] text-[#F5F2E9]"
+      className="relative isolate min-h-screen overflow-x-clip bg-[#0B0B0D] text-[#F5F2E9]"
     >
       <div
         aria-hidden="true"

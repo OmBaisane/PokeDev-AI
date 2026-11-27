@@ -1,4 +1,5 @@
 import { POKEMON_EVOLUTION } from "@/lib/progression/config";
+import PokemonCompanion from "@/components/dashboard/PokemonCompanion";
 
 type PokemonName = keyof typeof POKEMON_EVOLUTION;
 
@@ -56,10 +57,15 @@ function ProgressBar({ value, label }: { value: number; label: string }) {
         </span>
       </div>
 
-      <div className="h-2 overflow-hidden rounded-full bg-white/[0.07]">
+      <div className="relative h-3 w-full overflow-hidden rounded-full border border-white/10 bg-white/10">
         <div
-          className="h-full rounded-full bg-linear-to-r from-[#D6A84B] to-[#E6BD69] transition-all"
-          style={{ width: `${percentage}%` }}
+          className="h-full rounded-full transition-[width] duration-700 ease-out"
+          style={{
+            width: `${percentage}%`,
+            background:
+              "linear-gradient(to right, var(--element-accent, #D6A84B), var(--element-highlight, #E6BD69))",
+            boxShadow: "0 0 12px var(--element-accent, #D6A84B)",
+          }}
         />
       </div>
     </div>
@@ -205,21 +211,28 @@ export default function ProgressOverview({
         </div>
 
         {selectedPokemon && pokemon && (
-          <div className="mt-7 grid gap-5 sm:grid-cols-2">
-            <ProgressBar
-              value={levelPercentage}
-              label={`Level ${pokemonLevel} progress · ${100 - levelPercentage} XP to next level`}
+          <>
+            <PokemonCompanion
+              pokemon={selectedPokemon}
+              stage={evolutionStage}
             />
 
-            <ProgressBar
-              value={evolutionPercentage}
-              label={
-                nextThreshold === null
-                  ? "Final evolution achieved"
-                  : `Evolution progress · ${nextThreshold - pokemonXp} XP remaining`
-              }
-            />
-          </div>
+            <div className="mt-7 grid gap-5 sm:grid-cols-2">
+              <ProgressBar
+                value={levelPercentage}
+                label={`Level ${pokemonLevel} progress · ${100 - levelPercentage} XP to next level`}
+              />
+
+              <ProgressBar
+                value={evolutionPercentage}
+                label={
+                  nextThreshold === null
+                    ? "Final evolution achieved"
+                    : `Evolution progress · ${nextThreshold - pokemonXp} XP remaining`
+                }
+              />
+            </div>
+          </>
         )}
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.07] pt-5">
