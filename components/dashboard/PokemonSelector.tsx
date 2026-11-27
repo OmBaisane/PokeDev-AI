@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useTransition } from "react";
 
+import { useRouter } from "next/navigation";
 import { selectPokemonAction } from "@/app/actions/pokemon";
 
 type PokemonName = "Pyronix" | "Aquavex" | "Thornyx";
@@ -52,6 +53,7 @@ const starters: {
 export default function PokemonSelector({
   selectedPokemon: initialSelection,
 }: PokemonSelectorProps) {
+  const router = useRouter();
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(
     initialSelection,
   );
@@ -74,6 +76,7 @@ export default function PokemonSelector({
 
         if (result.success) {
           setSelectedPokemon(name);
+          router.refresh();
         }
       } catch {
         setMessage("Something went wrong. Please try again.");

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { getPokemonElementTheme } from "@/lib/pokemon/theme";
 
 import { requireVerifiedUser } from "@/lib/auth/permissions";
 import PokemonSelector from "@/components/dashboard/PokemonSelector";
@@ -13,7 +14,10 @@ export default async function DashboardPage() {
   const user = await requireVerifiedUser();
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0B0B0D] text-[#F5F2E9]">
+    <main
+      data-element-theme={getPokemonElementTheme(user.selectedPokemon)}
+      className="relative min-h-screen overflow-hidden bg-[#0B0B0D] text-[#F5F2E9]"
+    >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"

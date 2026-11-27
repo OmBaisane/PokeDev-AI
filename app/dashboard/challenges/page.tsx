@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { getPokemonElementTheme } from "@/lib/pokemon/theme";
 
 import Challenges from "@/components/dashboard/Challenges";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -12,7 +13,10 @@ export default async function ChallengesPage() {
   const user = await requireVerifiedUser();
 
   return (
-    <main className="min-h-screen bg-[#0B0B0D] text-[#F5F2E9]">
+    <main
+      data-element-theme={getPokemonElementTheme(user.selectedPokemon)}
+      className="min-h-screen bg-[#0B0B0D] text-[#F5F2E9]"
+    >
       <DashboardHeader userName={user.name} activePage="challenges" />
 
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">

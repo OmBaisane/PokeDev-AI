@@ -97,3 +97,79 @@ img {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* PokeDev AI — dashboard elemental themes */
+html[data-element-theme] {
+  --element-accent: #d6a84b;
+  --element-highlight: #e6bd69;
+  --element-soft: rgb(214 168 75 / 9%);
+  --element-border: rgb(214 168 75 / 25%);
+}
+
+html[data-element-theme="fire"] {
+  --element-accent: #dc3545;
+  --element-highlight: #ff8a96;
+  --element-soft: rgb(220 53 69 / 9%);
+  --element-border: rgb(220 53 69 / 28%);
+}
+
+html[data-element-theme="water"] {
+  --element-accent: #2563eb;
+  --element-highlight: #8bb7ff;
+  --element-soft: rgb(37 99 235 / 10%);
+  --element-border: rgb(37 99 235 / 28%);
+}
+
+html[data-element-theme="grass"] {
+  --element-accent: #22a058;
+  --element-highlight: #86d6a3;
+  --element-soft: rgb(34 160 88 / 10%);
+  --element-border: rgb(34 160 88 / 28%);
+}
+
+/* Gold text accents */
+html[data-element-theme] [class*="text-[#D6A84B]"],
+html[data-element-theme] [class*="text-[#E6BD69]"] {
+  color: var(--element-highlight) !important;
+}
+
+/* Solid accent backgrounds: primary buttons and controls */
+html[data-element-theme] [class~="bg-[#D6A84B]"] {
+  background-color: var(--element-accent) !important;
+}
+
+/* Soft accent backgrounds */
+html[data-element-theme] [class*="bg-[#D6A84B]/"],
+html[data-element-theme] [class*="bg-[#E6BD69]/"] {
+  background-color: var(--element-soft) !important;
+}
+
+/* Accent borders */
+html[data-element-theme] [class*="border-[#D6A84B]"],
+html[data-element-theme] [class*="border-[#E6BD69]"] {
+  border-color: var(--element-border) !important;
+}
+
+/* Hover states */
+html[data-element-theme] [class*="hover:bg-[#E6BD69]"]:hover {
+  background-color: var(--element-highlight) !important;
+}
+
+/* Radio controls */
+html[data-element-theme] [class*="accent-[#D6A84B]"] {
+  accent-color: var(--element-accent) !important;
+}
+
+/* Progress indicators */
+html[data-element-theme] [class*="from-[#D6A84B]"] {
+  --tw-gradient-from: var(--element-accent) var(--tw-gradient-from-position) !important;
+}
+
+html[data-element-theme] [class*="to-[#E6BD69]"] {
+  --tw-gradient-to: var(--element-highlight) var(--tw-gradient-to-position) !important;
+}
+
+/* Keyboard focus */
+html[data-element-theme] [class*="focus:border-[#D6A84B]"]:focus {
+  border-color: var(--element-accent) !important;
+}

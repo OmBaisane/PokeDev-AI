@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { logoutAction } from "@/app/actions/logout";
+import ThemeSwitcher from "@/components/dashboard/ThemeSwitcher";
 import MobileDashboardNav from "@/components/dashboard/MobileDashboardNav";
 
 type DashboardHeaderProps = {
@@ -85,6 +86,8 @@ export default function DashboardHeader({
               </p>
               <p className="text-[10px] text-white/35">Developer Trainer</p>
             </div>
+
+            <ThemeSwitcher />
 
             <form action={logoutAction}>
               <button
