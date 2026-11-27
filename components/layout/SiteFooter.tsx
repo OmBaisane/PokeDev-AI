@@ -12,16 +12,12 @@ export default function SiteFooter() {
             aria-label="PokeDev AI home"
           >
             <Image
-              src="/branding/pokedev-symbol.png"
-              alt=""
-              width={34}
-              height={34}
-              className="h-8 w-8 object-contain"
+              src="/branding/pokedev-logo-dark-stacked.png"
+              alt="PokeDev AI"
+              width={180}
+              height={124}
+              className="h-auto w-30 object-contain"
             />
-
-            <span className="text-base font-bold text-[#F5F2E9]">
-              PokeDev <span className="text-[#D6A84B]">AI</span>
-            </span>
           </Link>
 
           <p className="mt-3 text-xs leading-6 text-white/35">

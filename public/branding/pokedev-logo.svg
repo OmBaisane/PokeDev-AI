@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 220" width="880" height="220" fill="none">
+  <defs>
+    <linearGradient id="logoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2D28B"/>
+      <stop offset="55%" stop-color="#D6A84B"/>
+      <stop offset="100%" stop-color="#B88932"/>
+    </linearGradient>
+    <linearGradient id="logoRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F2D28B"/>
+      <stop offset="55%" stop-color="#D6A84B"/>
+      <stop offset="100%" stop-color="#C6A8FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Emblem Mark -->
+  <g transform="translate(20, 14)">
+    <circle cx="96" cy="96" r="90" fill="#0B0B10" stroke="url(#logoRing)" stroke-width="5"/>
+    <path d="M36 66 C28 66, 26 70, 26 77 L26 88 C26 93, 22 95, 18 96 C22 97, 26 99, 26 104 L26 115 C26 122, 28 126, 36 126"
+          stroke="#D6A84B" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M156 66 C164 66, 166 70, 166 77 L166 88 C166 93, 170 95, 174 96 C170 97, 166 99, 166 104 L166 115 C166 122, 164 126, 156 126"
+          stroke="#F2D28B" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Ears -->
+    <rect x="48" y="56" width="22" height="44" rx="11" fill="#16171F" stroke="#D6A84B" stroke-width="4"/>
+    <rect x="122" y="56" width="22" height="44" rx="11" fill="#16171F" stroke="#F2D28B" stroke-width="4"/>
+    <!-- Head -->
+    <circle cx="96" cy="94" r="38" fill="url(#logoGold)" stroke="#0B0B10" stroke-width="4"/>
+    <circle cx="82" cy="87" r="5" fill="#0B0B10"/>
+    <circle cx="83.5" cy="85.5" r="1.8" fill="#F7F5F0"/>
+    <circle cx="110" cy="87" r="5" fill="#0B0B10"/>
+    <circle cx="111.5" cy="85.5" r="1.8" fill="#F7F5F0"/>
+    <ellipse cx="96" cy="108" rx="16" ry="11.5" fill="#F7F5F0"/>
+    <ellipse cx="96" cy="103" rx="4.5" ry="3" fill="#0B0B10"/>
+    <path d="M89 110 Q92.5 115 96 110 Q99.5 115 103 110" stroke="#0B0B10" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Starlight Sparks -->
+    <path d="M96 24 L99 32 L107 35 L99 38 L96 46 L93 38 L85 35 L93 32 Z" fill="#F2D28B"/>
+    <path d="M48 44 L50 49 L55 51 L50 53 L48 58 L46 53 L41 51 L46 49 Z" fill="#C6A8FF"/>
+  </g>
+
+  <!-- Wordmark: PokeDev AI -->
+  <text x="236" y="132" font-family="'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="88" font-weight="700" letter-spacing="-1.5" fill="#F7F5F0">PokeDev <tspan fill="#D6A84B">AI</tspan></text>
+</svg>

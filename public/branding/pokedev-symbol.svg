@@ -1,12 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <title>PokeDev AI Symbol</title>
-  <desc>The official PokeDev AI mascot emblem.</desc>
-  <image
-    href="/branding/pokedev-symbol.png"
-    x="0"
-    y="0"
-    width="512"
-    height="512"
-    preserveAspectRatio="xMidYMid meet"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <defs>
+    <radialGradient id="obsidianCore" cx="50%" cy="45%" r="52%">
+      <stop offset="0%" stop-color="#1E1E2A"/>
+      <stop offset="68%" stop-color="#111219"/>
+      <stop offset="100%" stop-color="#0B0B10"/>
+    </radialGradient>
+    <linearGradient id="solarRing" x1="12%" y1="8%" x2="88%" y2="92%">
+      <stop offset="0%" stop-color="#F2D28B"/>
+      <stop offset="52%" stop-color="#D6A84B"/>
+      <stop offset="85%" stop-color="#C6A8FF"/>
+      <stop offset="100%" stop-color="#D6A84B"/>
+    </linearGradient>
+    <linearGradient id="goldCoat" x1="20%" y1="15%" x2="80%" y2="85%">
+      <stop offset="0%" stop-color="#F2D28B"/>
+      <stop offset="55%" stop-color="#D6A84B"/>
+      <stop offset="100%" stop-color="#A87E2D"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Medallion Base -->
+  <circle cx="256" cy="256" r="244" fill="url(#obsidianCore)" stroke="url(#solarRing)" stroke-width="12"/>
+  <circle cx="256" cy="256" r="228" stroke="#30303A" stroke-width="2"/>
+
+  <!-- Subtle Cosmic Aurora Swirl Arcs -->
+  <path d="M98 182 C125 118, 195 86, 268 92" stroke="#C6A8FF" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+  <path d="M412 332 C382 396, 312 426, 238 420" stroke="#D6A84B" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+
+  <!-- Left & Right Developer Curly Braces { } -->
+  <path d="M96 178 C78 178, 74 188, 74 204 L74 234 C74 246, 64 252, 54 256 C64 260, 74 266, 74 278 L74 308 C74 324, 78 334, 96 334"
+        stroke="#D6A84B" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M416 178 C434 178, 438 188, 438 204 L438 234 C438 246, 448 252, 458 256 C448 260, 438 266, 438 278 L438 308 C438 324, 434 334, 416 334"
+        stroke="#F2D28B" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Companion Silhouette & Head (Curly-Brace Ears + Celestial Puppy Face) -->
+  <!-- Left Curly Ear -->
+  <path d="M188 156 C152 152, 136 174, 144 202 C132 212, 132 226, 144 236 C138 264, 156 284, 190 278 Z"
+        fill="#0B0B10" stroke="#D6A84B" stroke-width="8" stroke-linejoin="round"/>
+  <!-- Right Curly Ear -->
+  <path d="M324 156 C360 152, 376 174, 368 202 C380 212, 380 226, 368 236 C374 264, 356 284, 322 278 Z"
+        fill="#0B0B10" stroke="#F2D28B" stroke-width="8" stroke-linejoin="round"/>
+
+  <!-- Head & Leaping Body Silhouette -->
+  <path d="M182 272 C154 286, 132 314, 128 348 C110 342, 98 326, 102 308 C86 322, 86 352, 108 368 C104 388, 118 402, 138 394 C156 386, 174 368, 196 364 C228 366, 268 358, 294 342 C318 354, 344 348, 352 330 C358 316, 344 300, 324 298 C332 282, 336 264, 334 244 L182 244 Z"
+        fill="url(#goldCoat)" stroke="#0B0B10" stroke-width="10" stroke-linejoin="round"/>
+
+  <!-- Head Dome -->
+  <path d="M178 214 C178 158, 214 132, 256 132 C298 132, 334 158, 334 214 C334 262, 300 294, 256 294 C212 294, 178 262, 178 214 Z"
+        fill="url(#goldCoat)" stroke="#0B0B10" stroke-width="10"/>
+
+  <!-- Forehead Starlight Crest & Brow Spots -->
+  <path d="M236 136 C248 118, 266 118, 274 134 C264 136, 256 144, 250 152 Z" fill="#F7F5F0"/>
+  <ellipse cx="222" cy="184" rx="9" ry="5" fill="#F7F5F0"/>
+  <ellipse cx="290" cy="184" rx="9" ry="5" fill="#F7F5F0"/>
+
+  <!-- Eyes -->
+  <circle cx="222" cy="212" r="13" fill="#0B0B10"/>
+  <circle cx="226" cy="208" r="4.5" fill="#F7F5F0"/>
+  <circle cx="290" cy="212" r="13" fill="#0B0B10"/>
+  <circle cx="294" cy="208" r="4.5" fill="#F7F5F0"/>
+
+  <!-- Muzzle & Friendly Smile -->
+  <ellipse cx="256" cy="248" rx="38" ry="28" fill="#F7F5F0"/>
+  <ellipse cx="256" cy="236" rx="11" ry="7" fill="#0B0B10"/>
+  <path d="M238 252 Q247 264 256 252 Q265 264 274 252" stroke="#0B0B10" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+
+  <!-- 4-Point Starlight & Aurora Sparkles -->
+  <path d="M256 62 L262 78 L278 84 L262 90 L256 106 L250 90 L234 84 L250 78 Z" fill="#F2D28B"/>
+  <path d="M132 126 L136 136 L146 140 L136 144 L132 154 L128 144 L118 140 L128 136 Z" fill="#C6A8FF"/>
+  <path d="M384 128 L388 138 L398 142 L388 146 L384 156 L380 146 L370 142 L380 138 Z" fill="#F2D28B"/>
+  <path d="M256 408 L261 421 L274 426 L261 431 L256 444 L251 431 L238 426 L251 421 Z" fill="#F2D28B"/>
 </svg>
