@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import ProgressCelebration from "@/components/dashboard/ProgressCelebration";
+import { useProgressCelebration } from "@/components/dashboard/useProgressCelebration";
 
 type Language = "javascript" | "typescript" | "python";
 type Difficulty = "beginner" | "intermediate" | "advanced";
@@ -26,6 +28,8 @@ type SubmissionResult = {
   level?: number;
   evolutionStage?: number;
   explanation?: string;
+  previousLevel?: number;
+  previousEvolutionStage?: number;
   error?: string;
   message?: string;
 };
@@ -51,6 +55,9 @@ export default function Challenges() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState<string | null>(null);
   const [loadError, setLoadError] = useState("");
+
+  const { celebration, showProgressCelebration, dismissCelebration } =
+    useProgressCelebration();
 
   useEffect(() => {
     let active = true;
@@ -128,6 +135,9 @@ export default function Challenges() {
       const data: SubmissionResult = await response.json();
 
       if (response.ok || response.status === 409) {
+        if (response.ok && data.correct && !data.alreadyCompleted) {
+          showProgressCelebration(data);
+        }
         setResults((current) => ({
           ...current,
           [challenge.id]: data,
@@ -373,6 +383,11 @@ export default function Challenges() {
           );
         })}
       </div>
+
+      <ProgressCelebration
+        celebration={celebration}
+        onClose={dismissCelebration}
+      />
     </section>
   );
 }

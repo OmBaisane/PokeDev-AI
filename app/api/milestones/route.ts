@@ -153,6 +153,8 @@ export async function POST(request: NextRequest) {
       pokemonXp: result.pokemonXp,
       level: result.level,
       evolutionStage: result.evolutionStage,
+      previousLevel: result.previousLevel,
+      previousEvolutionStage: result.previousEvolutionStage,
     });
   } catch {
     return jsonError("Unable to claim milestone reward.", 500);

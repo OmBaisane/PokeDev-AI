@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import ProgressCelebration from "@/components/dashboard/ProgressCelebration";
+import { useProgressCelebration } from "@/components/dashboard/useProgressCelebration";
 
 type Milestone = {
   id: string;
@@ -56,6 +58,9 @@ export default function LearningMilestones() {
   const [claimingId, setClaimingId] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [feedback, setFeedback] = useState("");
+
+  const { celebration, showProgressCelebration, dismissCelebration } =
+    useProgressCelebration();
 
   const loadMilestones = useCallback(async () => {
     try {
@@ -125,6 +130,10 @@ export default function LearningMilestones() {
 
       if (!response.ok) {
         throw new Error(result.error || "Unable to claim reward.");
+      }
+
+      if (!result.alreadyCompleted) {
+        showProgressCelebration(result);
       }
 
       setFeedback(
@@ -384,6 +393,11 @@ export default function LearningMilestones() {
           })}
         </div>
       )}
+
+      <ProgressCelebration
+        celebration={celebration}
+        onClose={dismissCelebration}
+      />
     </section>
   );
 }

@@ -36,6 +36,8 @@ type AwardProgressionXpResult = {
   totalXp?: number;
   pokemonName?: string | null;
   pokemonXp?: number;
+  previousLevel?: number;
+  previousEvolutionStage?: number;
   level?: number;
   evolutionStage?: number;
 };
@@ -44,10 +46,8 @@ function getRewardAmount(input: AwardProgressionXpInput): number {
   switch (input.sourceType) {
     case "analysis":
       return XP_REWARDS.analysis;
-
     case "challenge":
       return XP_REWARDS.challenge[input.difficulty];
-
     case "milestone":
       return XP_REWARDS.milestone;
   }
@@ -108,28 +108,6 @@ export async function awardProgressionXp(
 
       await event.save({ session });
 
-      const update: Record<string, number> = {
-        totalXp: xpAwarded,
-      };
-
-      if (input.sourceType === "analysis") {
-        update.completedAnalyses = 1;
-      }
-
-      if (input.sourceType === "challenge") {
-        update.completedChallenges = 1;
-      }
-
-      if (input.sourceType === "milestone") {
-        update.completedMilestones = 1;
-      }
-
-      const updateQuery: Record<string, number> = {};
-
-      for (const [key, value] of Object.entries(update)) {
-        updateQuery[key] = value;
-      }
-
       const increments: Record<string, number> = {
         totalXp: xpAwarded,
       };
@@ -148,14 +126,18 @@ export async function awardProgressionXp(
 
       let pokemonResult: ReturnType<typeof getPokemonProgression> | null = null;
 
+      let previousPokemonResult: ReturnType<
+        typeof getPokemonProgression
+      > | null = null;
+
       if (pokemonName) {
         const currentPokemonXp = user.pokemonProgress?.[pokemonName]?.xp ?? 0;
+
+        previousPokemonResult = getPokemonProgression(currentPokemonXp);
 
         pokemonResult = getPokemonProgression(currentPokemonXp + xpAwarded);
 
         increments[`pokemonProgress.${pokemonName}.xp`] = xpAwarded;
-
-        // Set derived progression values below.
       }
 
       const updateOperations: Record<string, unknown> = {
@@ -165,7 +147,6 @@ export async function awardProgressionXp(
       if (pokemonName && pokemonResult) {
         updateOperations.$set = {
           [`pokemonProgress.${pokemonName}.level`]: pokemonResult.level,
-
           [`pokemonProgress.${pokemonName}.evolutionStage`]:
             pokemonResult.evolutionStage,
         };
@@ -190,9 +171,11 @@ export async function awardProgressionXp(
         xpAwarded,
         totalXp: updatedUser.totalXp,
         pokemonName,
-        ...(pokemonName && pokemonResult
+        ...(pokemonName && pokemonResult && previousPokemonResult
           ? {
               pokemonXp: updatedUser.pokemonProgress[pokemonName].xp,
+              previousLevel: previousPokemonResult.level,
+              previousEvolutionStage: previousPokemonResult.evolutionStage,
               level: pokemonResult.level,
               evolutionStage: pokemonResult.evolutionStage,
             }

@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-
 import type { DebugAnalysisResponse } from "@/lib/ai/schemas";
+
+import ProgressCelebration from "@/components/dashboard/ProgressCelebration";
+import { useProgressCelebration } from "@/components/dashboard/useProgressCelebration";
 
 type Language = "javascript" | "typescript" | "python";
 
@@ -20,6 +22,9 @@ export default function DebugLab() {
 
   const [isRetryingReward, setIsRetryingReward] = useState(false);
   const [rewardPending, setRewardPending] = useState(false);
+
+  const { celebration, showProgressCelebration, dismissCelebration } =
+    useProgressCelebration();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -61,6 +66,8 @@ export default function DebugLab() {
         );
       }
 
+      showProgressCelebration(payload.progression);
+
       setResult(payload.data);
       setAnalysisId(payload.analysisId);
       setRewardPending(payload.progressionPending === true);
@@ -91,6 +98,8 @@ export default function DebugLab() {
       if (!response.ok) {
         throw new Error(payload.error || "XP reward retry failed.");
       }
+
+      showProgressCelebration(payload.progression);
 
       setRewardPending(false);
     } catch (err) {
@@ -454,6 +463,11 @@ export default function DebugLab() {
           </div>
         )}
       </section>
+
+      <ProgressCelebration
+        celebration={celebration}
+        onClose={dismissCelebration}
+      />
     </div>
   );
 }

@@ -145,6 +145,8 @@ export async function POST(request: Request) {
       pokemonXp: reward.pokemonXp,
       level: reward.level,
       evolutionStage: reward.evolutionStage,
+      previousLevel: reward.previousLevel,
+      previousEvolutionStage: reward.previousEvolutionStage,
       explanation: challenge.explanation,
     });
   } catch (error) {
