@@ -130,22 +130,6 @@ img {
 }
 
 .pokemon-companion-image {
-  animation: pokemon-idle 2.6s ease-in-out infinite;
-  will-change: transform;
-}
-
-.pokemon-companion-stage:hover .pokemon-companion-image {
-  animation: pokemon-interact 650ms ease-in-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pokemon-companion-image,
-  .pokemon-companion-stage:hover .pokemon-companion-image {
-    animation: none;
-  }
-}
-
-.pokemon-companion-image {
   animation: pokemon-idle 3.8s ease-in-out infinite;
   will-change: transform;
 }

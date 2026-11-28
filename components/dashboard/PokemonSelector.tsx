@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useState, useTransition } from "react";
-
 import { useRouter } from "next/navigation";
+
 import { selectPokemonAction } from "@/app/actions/pokemon";
 
 type PokemonName = "Pyronix" | "Aquavex" | "Thornyx";
@@ -54,11 +54,15 @@ export default function PokemonSelector({
   selectedPokemon: initialSelection,
 }: PokemonSelectorProps) {
   const router = useRouter();
+
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(
     initialSelection,
   );
-
+  const [pendingPokemon, setPendingPokemon] = useState<PokemonName | null>(
+    null,
+  );
   const [message, setMessage] = useState("");
+
   const [isPending, startTransition] = useTransition();
 
   function handleSelection(name: PokemonName) {
@@ -67,6 +71,7 @@ export default function PokemonSelector({
     }
 
     setMessage("");
+    setPendingPokemon(name);
 
     startTransition(async () => {
       try {
@@ -80,6 +85,8 @@ export default function PokemonSelector({
         }
       } catch {
         setMessage("Something went wrong. Please try again.");
+      } finally {
+        setPendingPokemon(null);
       }
     });
   }
@@ -117,6 +124,7 @@ export default function PokemonSelector({
       <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {starters.map((pokemon) => {
           const isSelected = selectedPokemon === pokemon.name;
+          const isBeingSelected = pendingPokemon === pokemon.name;
 
           return (
             <article
@@ -170,7 +178,8 @@ export default function PokemonSelector({
                   onClick={() => handleSelection(pokemon.name)}
                   disabled={Boolean(selectedPokemon) || isPending}
                   aria-pressed={isSelected}
-                  className={`mt-5 w-full rounded-xl px-4 py-3.5 text-xs font-bold transition duration-200 ${
+                  aria-busy={isBeingSelected}
+                  className={`mt-5 w-full rounded-xl px-4 py-3.5 text-xs font-bold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E6BD69] focus-visible:ring-offset-2 focus-visible:ring-offset-[#111113] active:scale-[0.99] ${
                     isSelected
                       ? "cursor-default border border-[#D6A84B]/30 bg-[#D6A84B]/8 text-[#E6BD69]"
                       : selectedPokemon
@@ -178,13 +187,15 @@ export default function PokemonSelector({
                         : "bg-[#D6A84B] text-[#17130B] hover:bg-[#E6BD69] disabled:cursor-not-allowed disabled:opacity-50"
                   }`}
                 >
-                  {isPending && !selectedPokemon
+                  {isBeingSelected
                     ? "Selecting..."
-                    : isSelected
-                      ? "✓ Your selected companion"
-                      : selectedPokemon
-                        ? "Unavailable"
-                        : `Choose ${pokemon.name}`}
+                    : isPending
+                      ? "Please wait..."
+                      : isSelected
+                        ? "✓ Your selected companion"
+                        : selectedPokemon
+                          ? "Unavailable"
+                          : `Choose ${pokemon.name}`}
                 </button>
               </div>
             </article>

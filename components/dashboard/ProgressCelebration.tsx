@@ -10,6 +10,24 @@ type Props = {
   onClose: () => void;
 };
 
+const evolutionGifs: Record<
+  "Pyronix" | "Aquavex" | "Thornyx",
+  readonly [string, string]
+> = {
+  Pyronix: [
+    "/images/pokemon/evolution/pyronix-to-cindervolt-evolution.gif",
+    "/images/pokemon/evolution/cindervolt-to-solpyrax-evolution.gif",
+  ],
+  Aquavex: [
+    "/images/pokemon/evolution/aquavex-to-rivucrest-evolution.gif",
+    "/images/pokemon/evolution/rivucrest-to-tiderion-evolution.gif",
+  ],
+  Thornyx: [
+    "/images/pokemon/evolution/thornyx-to-briarthorn-evolution.gif",
+    "/images/pokemon/evolution/briarthorn-to-verdantyr-evolution.gif",
+  ],
+};
+
 export default function ProgressCelebration({ celebration, onClose }: Props) {
   if (!celebration) return null;
 
@@ -26,6 +44,20 @@ export default function ProgressCelebration({ celebration, onClose }: Props) {
   if (!currentPokemon) return null;
 
   const isEvolution = celebration.kind === "evolution";
+
+  const pokemonImage = `/images/pokemon/${currentPokemon.name.toLowerCase()}.png`;
+
+  const transitionIndex =
+    celebration.evolutionStage === celebration.previousEvolutionStage + 1
+      ? celebration.previousEvolutionStage - 1
+      : -1;
+
+  const evolutionGif =
+    isEvolution && transitionIndex >= 0 && transitionIndex <= 1
+      ? evolutionGifs[celebration.pokemonName][transitionIndex as 0 | 1]
+      : null;
+
+  const celebrationImage = evolutionGif ?? pokemonImage;
 
   return (
     <div
@@ -61,14 +93,26 @@ export default function ProgressCelebration({ celebration, onClose }: Props) {
               className="absolute inset-5 rounded-full bg-[#D6A84B]/10 blur-2xl"
             />
 
-            <Image
-              src={`/images/pokemon/${currentPokemon.name.toLowerCase()}.png`}
-              alt={currentPokemon.name}
-              width={190}
-              height={190}
-              priority
-              className="relative h-44 w-44 object-contain drop-shadow-[0_12px_25px_rgba(214,168,75,0.18)]"
-            />
+            <picture className="relative h-48 w-48">
+              <source
+                media="(prefers-reduced-motion: reduce)"
+                srcSet={pokemonImage}
+              />
+
+              <Image
+                src={celebrationImage}
+                alt={
+                  evolutionGif
+                    ? `${previousPokemon?.name ?? celebration.pokemonName} evolving into ${currentPokemon.name}`
+                    : currentPokemon.name
+                }
+                width={190}
+                height={190}
+                priority
+                unoptimized={Boolean(evolutionGif)}
+                className="relative h-48 w-48 object-contain drop-shadow-[0_12px_25px_rgba(214,168,75,0.18)]"
+              />
+            </picture>
           </div>
 
           {isEvolution ? (
@@ -103,6 +147,7 @@ export default function ProgressCelebration({ celebration, onClose }: Props) {
               <p className="text-[10px] uppercase tracking-wider text-white/35">
                 Level
               </p>
+
               <p className="mt-1 text-lg font-bold text-white">
                 {celebration.previousLevel}
                 <span className="mx-2 text-[#D6A84B]">→</span>
@@ -114,6 +159,7 @@ export default function ProgressCelebration({ celebration, onClose }: Props) {
               <p className="text-[10px] uppercase tracking-wider text-white/35">
                 Evolution
               </p>
+
               <p className="mt-1 text-lg font-bold text-white">
                 {celebration.previousEvolutionStage}
                 <span className="mx-2 text-[#D6A84B]">→</span>
