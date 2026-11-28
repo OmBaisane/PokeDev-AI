@@ -13,30 +13,35 @@ export const XP_REWARDS = {
 export const POKEMON_EVOLUTION = {
   Pyronix: {
     stages: [
-      { stage: 1, name: "Pyronix", requiredXp: 0 },
-      { stage: 2, name: "Cindervolt", requiredXp: 250 },
-      { stage: 3, name: "Solpyrax", requiredXp: 700 },
+      { stage: 1, name: "Pyronix" },
+      { stage: 2, name: "Cindervolt" },
+      { stage: 3, name: "Solpyrax" },
     ],
   },
 
   Aquavex: {
     stages: [
-      { stage: 1, name: "Aquavex", requiredXp: 0 },
-      { stage: 2, name: "Rivucrest", requiredXp: 250 },
-      { stage: 3, name: "Tiderion", requiredXp: 700 },
+      { stage: 1, name: "Aquavex" },
+      { stage: 2, name: "Rivucrest" },
+      { stage: 3, name: "Tiderion" },
     ],
   },
 
   Thornyx: {
     stages: [
-      { stage: 1, name: "Thornyx", requiredXp: 0 },
-      { stage: 2, name: "Briarthorn", requiredXp: 250 },
-      { stage: 3, name: "Verdantyr", requiredXp: 700 },
+      { stage: 1, name: "Thornyx" },
+      { stage: 2, name: "Briarthorn" },
+      { stage: 3, name: "Verdantyr" },
     ],
   },
 } as const;
 
 export const POKEMON_LEVEL_XP = 100;
+
+export const POKEMON_EVOLUTION_LEVELS = {
+  stage2: 1500,
+  stage3: 3000,
+} as const;
 
 export type PokemonName = keyof typeof POKEMON_EVOLUTION;
 
@@ -45,17 +50,19 @@ export type ChallengeDifficulty = keyof typeof XP_REWARDS.challenge;
 export type ProgressionSourceType = "analysis" | "challenge" | "milestone";
 
 export function getPokemonProgression(xp: number) {
-  const level = Math.floor(xp / POKEMON_LEVEL_XP) + 1;
+  const safeXp = Math.max(0, Math.floor(xp));
+  const level = Math.floor(safeXp / POKEMON_LEVEL_XP) + 1;
 
-  const stages = POKEMON_EVOLUTION.Pyronix.stages;
-
-  const currentStage = [...stages]
-    .reverse()
-    .find((stage) => xp >= stage.requiredXp);
+  const evolutionStage =
+    safeXp >= POKEMON_EVOLUTION_LEVELS.stage3
+      ? 3
+      : safeXp >= POKEMON_EVOLUTION_LEVELS.stage2
+        ? 2
+        : 1;
 
   return {
-    xp,
+    xp: safeXp,
     level,
-    evolutionStage: currentStage?.stage ?? 1,
+    evolutionStage,
   };
 }

@@ -1,7 +1,8 @@
-import { POKEMON_EVOLUTION } from "@/lib/progression/config";
+import { POKEMON_EVOLUTION_LEVELS } from "@/lib/progression/config";
+import { getPokemonProgression } from "@/lib/progression/config";
 import PokemonCompanion from "@/components/dashboard/PokemonCompanion";
 
-type PokemonName = keyof typeof POKEMON_EVOLUTION;
+import type { PokemonName } from "@/lib/progression/config";
 
 type PokemonProgress = {
   xp: number;
@@ -92,35 +93,33 @@ export default function ProgressOverview({
 }: ProgressOverviewProps) {
   const pokemon = selectedPokemonProgress;
 
-  const evolutionStages = selectedPokemon
-    ? POKEMON_EVOLUTION[selectedPokemon].stages
-    : [];
-
   const pokemonXp = pokemon?.xp ?? 0;
-  const pokemonLevel = pokemon?.level ?? 1;
 
-  const evolutionStage =
-    evolutionStages.findLast((stage) => pokemonXp >= stage.requiredXp)?.stage ??
-    1;
+  // Always calculate progression from XP using the central rules.
+  const progression = getPokemonProgression(pokemonXp);
 
-  const currentStage = evolutionStages[evolutionStage - 1];
-  const nextStage = evolutionStages[evolutionStage];
+  const pokemonLevel = progression.level;
+  const evolutionStage = progression.evolutionStage;
 
-  const currentThreshold = currentStage?.requiredXp ?? 0;
-  const nextThreshold = nextStage?.requiredXp ?? null;
+  const currentThreshold =
+    evolutionStage === 1
+      ? 0
+      : evolutionStage === 2
+        ? POKEMON_EVOLUTION_LEVELS.stage2
+        : POKEMON_EVOLUTION_LEVELS.stage3;
+
+  const nextThreshold =
+    evolutionStage === 1
+      ? POKEMON_EVOLUTION_LEVELS.stage2
+      : evolutionStage === 2
+        ? POKEMON_EVOLUTION_LEVELS.stage3
+        : null;
 
   const evolutionPercentage =
     nextThreshold === null
       ? 100
-      : Math.min(
-          100,
-          Math.max(
-            0,
-            ((pokemonXp - currentThreshold) /
-              (nextThreshold - currentThreshold)) *
-              100,
-          ),
-        );
+      : ((pokemonXp - currentThreshold) / (nextThreshold - currentThreshold)) *
+        100;
 
   const levelPercentage = pokemonXp % 100;
 
@@ -241,7 +240,9 @@ export default function ProgressOverview({
                 label={
                   nextThreshold === null
                     ? "Final evolution achieved"
-                    : `Evolution progress · ${nextThreshold - pokemonXp} XP remaining`
+                    : `Evolution progress · ${(
+                        nextThreshold - pokemonXp
+                      ).toLocaleString()} XP remaining`
                 }
               />
             </div>

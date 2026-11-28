@@ -5,7 +5,7 @@ export default function HeroSection() {
   return (
     <section
       aria-labelledby="hero-title"
-      className="relative mx-auto grid min-h-[calc(90vh-73px)] w-full max-w-7xl items-center gap-14 px-5 py-20 sm:px-8 md:grid-cols-[1.05fr_0.95fr] md:py-24 lg:gap-20 lg:px-12"
+      className="relative mx-auto grid min-h-[calc(90vh-73px)] w-full max-w-7xl items-center gap-12 overflow-hidden px-5 py-16 sm:px-8 sm:py-20 md:grid-cols-[0.9fr_1.1fr] md:gap-8 md:py-24 lg:gap-12 lg:px-12"
     >
       <div className="relative z-10 max-w-2xl">
         <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-[#D6A84B]/20 bg-[#D6A84B]/[0.07] px-4 py-2 text-xs font-semibold tracking-[0.12em] text-[#E6BD69] sm:text-sm">
@@ -55,6 +55,7 @@ export default function HeroSection() {
             <span className="text-[#D6A84B]">✦</span>
             Understand the cause
           </span>
+
           <span className="flex items-center gap-2">
             <span className="text-[#D6A84B]">✦</span>
             Keep your analysis history
@@ -62,69 +63,53 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="relative mx-auto w-full max-w-lg">
+      <div className="relative mx-auto w-full min-w-0 md:-mr-4 lg:-mr-8">
         <div
           aria-hidden="true"
-          className="absolute inset-10 rounded-full bg-[#D6A84B]/10 blur-[90px]"
+          className="pointer-events-none absolute inset-[12%] rounded-full bg-[#D6A84B]/10 blur-[100px]"
         />
 
-        <div className="absolute inset-[8%] rounded-full border border-[#D6A84B]/10" />
-        <div className="absolute inset-[17%] rounded-full border border-dashed border-[#D6A84B]/15" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-[18%] rounded-full border border-[#D6A84B]/10"
+        />
 
-        <div className="relative rounded-4xl border border-white/10 bg-[#131316]/90 p-5 shadow-[0_25px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:p-7">
-          <div className="flex items-center justify-between border-b border-white/8 pb-4">
+        <div className="relative overflow-hidden rounded-4xl border border-[#D6A84B]/15 bg-[#0B0B0D] shadow-[0_25px_100px_rgba(0,0,0,0.45)]">
+          <Image
+            src="/images/hero/pokedev-starters-hero.png"
+            alt="Pyronix, Aquavex and Thornyx standing together as the three starter companions of PokeDev AI"
+            width={1536}
+            height={1024}
+            priority
+            sizes="(max-width: 768px) 100vw, 58vw"
+            className="relative z-10 h-auto w-full object-contain"
+          />
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-20 bg-linear-to-t from-[#0B0B0D]/70 to-transparent"
+          />
+
+          <div className="absolute bottom-4 left-4 right-4 z-30 flex items-center justify-between gap-3 sm:bottom-5 sm:left-5 sm:right-5">
             <div>
-              <p className="text-[10px] font-bold tracking-[0.2em] text-[#D6A84B]/70">
-                POKEDEV AI
+              <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#D6A84B]">
+                Choose your companion
               </p>
-              <p className="mt-1.5 text-sm font-semibold text-white/90">
-                Your debugging companion
+              <p className="mt-1 text-xs font-semibold text-white/85 sm:text-sm">
+                Three elements. One journey.
               </p>
             </div>
 
-            <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-[10px] font-semibold text-emerald-300">
-              AI ASSISTED
+            <span className="shrink-0 rounded-full border border-white/10 bg-black/50 px-3 py-1.5 text-[9px] font-bold tracking-wider text-[#E6BD69] backdrop-blur-md sm:text-[10px]">
+              FIRE · WATER · GRASS
             </span>
           </div>
-
-          <div className="relative mx-auto my-5 flex aspect-square w-full max-w-82.5 items-center justify-center">
-            <div className="absolute inset-5 rounded-full bg-[#D6A84B]/6 blur-2xl" />
-
-            <Image
-              src="/images/pokemon/pyronix.png"
-              alt="Pyronix, the Fire starter companion"
-              width={700}
-              height={700}
-              priority
-              sizes="(max-width: 768px) 75vw, 330px"
-              className="relative z-10 h-full w-full object-contain drop-shadow-[0_15px_35px_rgba(0,0,0,0.5)]"
-            />
-          </div>
-
-          <div className="rounded-2xl border border-[#D6A84B]/15 bg-[#D6A84B]/4.5 p-4 sm:p-5">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold text-white/90">
-                  Every error has a story.
-                </p>
-                <p className="mt-1.5 text-xs leading-5 text-white/45">
-                  Understand the problem, not just the fix.
-                </p>
-              </div>
-
-              <span className="text-2xl text-[#E6BD69]" aria-hidden="true">
-                ✧
-              </span>
-            </div>
-          </div>
         </div>
 
-        <div className="absolute -bottom-5 -left-3 rounded-xl border border-white/10 bg-[#171719] px-4 py-3 shadow-xl sm:-left-8">
-          <p className="text-[10px] font-medium tracking-wide text-white/40">
-            YOUR COMPANION
-          </p>
-          <p className="mt-1 text-sm font-bold text-[#E6BD69]">Pyronix</p>
-        </div>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-8 -right-5 h-32 w-32 rounded-full bg-[#D6A84B]/10 blur-3xl"
+        />
       </div>
     </section>
   );
